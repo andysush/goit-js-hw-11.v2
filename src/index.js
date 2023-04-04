@@ -60,7 +60,7 @@ function createPhotoMarkup(photos) {
         </p>
         <p class="info-item">
           <b>Comments</b>
-          ${photos.comments}
+          ${photo.comments}
         </p>
         <p class="info-item">
           <b>Downloads</b>
