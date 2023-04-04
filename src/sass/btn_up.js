@@ -26,27 +26,24 @@ export const btnUp = {
     }
   },
   addEventListener() {
-    // при прокрутке окна (window)
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       if (this.scrolling && scrollY > 0) {
         return;
       }
       this.scrolling = false;
-      // если пользователь прокрутил страницу более чем на 200px
+
       if (scrollY > 400) {
-        // сделаем кнопку .btn-up видимой
         this.show();
       } else {
-        // иначе скроем кнопку .btn-up
         this.hide();
       }
     });
-    // при нажатии на кнопку .btn-up
+
     document.querySelector('.btn-up').onclick = () => {
       this.scrolling = true;
       this.hide();
-      // переместиться в верхнюю часть страницы
+
       window.scrollTo({
         top: 0,
         left: 0,
