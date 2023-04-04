@@ -6,7 +6,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const formEl = document.querySelector('#search-form');
 const galleryListEl = document.querySelector('.gallery');
 const watchPoinEl = document.querySelector('.watchpoint');
-console.log('watchPoinEl:', watchPoinEl);
 let allHits = 0;
 const photoApiService = new PhotoApiService();
 let gallery = new SimpleLightbox('.photo-card a', {
@@ -30,11 +29,7 @@ function onSubmitForm(e) {
   photoApiService.resetPageNum();
   resetPhotoList();
   photoApiService.getPhotos().then(({ hits, totalHits }) => {
-    allHits = hits.length;
-    if (hits.length > totalHits) {
-      Notify.info("We're sorry, but you've reached the end of search results.");
-    }
-    if (totalHits === 0) {
+    if (totalHits === 0 && hits.length === 0) {
       Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
       );
@@ -81,3 +76,25 @@ function createPhotoMarkup(photos) {
 function resetPhotoList() {
   galleryListEl.innerHTML = '';
 }
+
+const onScroll = entries => {
+  entries.forEach(element => {
+    if (element.isIntersecting && photoApiService.searchQuery !== '') {
+      photoApiService.getPhotos().then(({ hits, totalHits }) => {
+        createPhotoMarkup(hits);
+        gallery.refresh();
+        if (hits.length === 0 && totalHits !== 0) {
+          Notify.info(
+            "We're sorry, but you've reached the end of search results."
+          );
+        }
+      });
+    }
+  });
+};
+
+const options = {
+  rootMargin: '200px',
+};
+const observer = new IntersectionObserver(onScroll, options);
+observer.observe(watchPoinEl);
