@@ -2,18 +2,19 @@ import PhotoApiService from './getPhotoApi';
 import { Notify } from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import { btnUp } from './sass/btn_up';
 
 const formEl = document.querySelector('#search-form');
 const galleryListEl = document.querySelector('.gallery');
 const watchPoinEl = document.querySelector('.watchpoint');
-let allHits = 0;
+
 const photoApiService = new PhotoApiService();
 let gallery = new SimpleLightbox('.photo-card a', {
   loop: false,
 });
 
 formEl.addEventListener('submit', onSubmitForm);
-
+btnUp.addEventListener();
 function onSubmitForm(e) {
   e.preventDefault();
   resetPhotoList();
